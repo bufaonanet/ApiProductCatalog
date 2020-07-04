@@ -13,8 +13,7 @@ namespace ProductCatalog.Data.Maps
             builder.HasKey(p => p.Id);
             builder.Property(p => p.DateCreate).IsRequired();
             builder.Property(p => p.Description).IsRequired().HasMaxLength(1024).HasColumnType("varchar(1024)");
-            builder.Property(p => p.Image).IsRequired().HasMaxLength(1024).HasColumnType("varchar(1024)");
-            builder.Property(p => p.Image).IsRequired().HasMaxLength(1024).HasColumnType("varchar(1024)");
+            builder.Property(p => p.Image).IsRequired().HasMaxLength(1024).HasColumnType("varchar(1024)");            
             builder.Property(p => p.LastUpdateDate).IsRequired();
             builder.Property(p => p.Price).IsRequired().HasColumnType("money");
             builder.Property(p => p.Quantity).IsRequired();

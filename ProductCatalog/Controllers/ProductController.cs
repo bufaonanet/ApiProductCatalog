@@ -1,12 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProductCatalog.ViewModels.ProductViewModes;
 using ProductCatalog.Data;
 using ProductCatalog.Models;
+using ProductCatalog.ViewModels.ProductViewModes;
 using ProductCatalog.ViewModels;
-using System;
 
 namespace ProductCatalog.Controllers
 {
@@ -42,12 +42,22 @@ namespace ProductCatalog.Controllers
         public Product Get(int id)
         {
             return _context.Products.Where(x => x.Id == id).FirstOrDefault();
-        }
+        }        
 
         [Route("v1/products")]
         [HttpPost]
         public ResultViewModel Post([FromBody] EditorProdutcViewModel model)
         {
+            if (model == null)
+            {
+                return new ResultViewModel
+                {
+                    Sucess = false,
+                    Message = "nada enviado",
+                    Data = null
+                };
+            }
+
             model.Validate();
 
             if (model.Invalid)
@@ -85,6 +95,16 @@ namespace ProductCatalog.Controllers
         [HttpPut]
         public ResultViewModel Put([FromBody] EditorProdutcViewModel model)
         {
+            if (model == null)
+            {
+                return new ResultViewModel
+                {
+                    Sucess = false,
+                    Message = "nada enviado",
+                    Data = null
+                };
+            }
+
             model.Validate();
 
             if (model.Invalid)
@@ -97,7 +117,7 @@ namespace ProductCatalog.Controllers
                 };
             }
 
-            var product = _context.Products.Find(model);
+            var product = _context.Products.Find(model.Id);
             product.Title = model.Title;
             product.CategoryId = model.CategoryId;
             product.Description = model.Description;
