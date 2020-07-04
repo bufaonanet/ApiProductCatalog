@@ -27,9 +27,7 @@ namespace ProductCatalog
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-
-            //app.UseMvc();
-            app.UseStaticFiles();
+           
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

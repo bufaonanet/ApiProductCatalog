@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProductCatalog.Models
 {
-    public class Produtc
+    public class Product
     {
         public int Id { get; set; }
         public string Title { get; set; }

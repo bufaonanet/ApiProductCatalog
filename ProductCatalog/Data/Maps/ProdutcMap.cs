@@ -5,9 +5,9 @@ using ProductCatalog.Models;
 
 namespace ProductCatalog.Data.Maps
 {
-    public class ProdutcMap : IEntityTypeConfiguration<Produtc>
+    public class ProdutcMap : IEntityTypeConfiguration<Product>
     {
-        public void Configure(EntityTypeBuilder<Produtc> builder)
+        public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.ToTable("Product");
             builder.HasKey(p => p.Id);

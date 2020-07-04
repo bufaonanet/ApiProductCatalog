@@ -35,7 +35,7 @@ namespace ProductCatalog.Controllers
 
         [Route("v1/categories/{id}/products")]
         [HttpGet]
-        public IEnumerable<Produtc> GetProducts(int id)
+        public IEnumerable<Product> GetProducts(int id)
         {
             return _context.Products.AsNoTracking()
                 .Where(x => x.CategoryId == id)
