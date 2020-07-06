@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProductCatalog.Data;
+using ProductCatalog.Repositoreis;
+using ZNetCS.AspNetCore.Compression.DependencyInjection;
 
 namespace ProductCatalog
 {
@@ -13,9 +15,17 @@ namespace ProductCatalog
         {
             services.AddMvc();
 
-            //AddScoped cria um item por requisição AddTransient cria vários 
-            //services.AddTransient<StoreDataContext, StoreDataContext>();
+            //Objetos de escopo (AddScoped) são os mesmos em uma solicitação, 
+            //mas diferentes entre solicitações diferentes.;
             services.AddScoped<StoreDataContext, StoreDataContext>();
+
+            //Objetos transientes (AddTransient) são sempre diferentes. 
+            //uma nova instância é fornecida para todos os controladores e todos os serviços.
+            services.AddTransient<ProductRepository, ProductRepository>();
+            services.AddTransient<CategoryRepository, CategoryRepository>();
+
+            //adicionando o middleware para o serviço de compressão
+            services.AddResponseCompression();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -29,6 +39,8 @@ namespace ProductCatalog
             {
                 endpoints.MapControllers();
             });
+
+            app.UseResponseCompression();
 
 
         }

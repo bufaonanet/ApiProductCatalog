@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ProductCatalog.Data;
 using ProductCatalog.Models;
 using ProductCatalog.ViewModels.ProductViewModes;
 using ProductCatalog.ViewModels;
+using ProductCatalog.Repositoreis;
 
 namespace ProductCatalog.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly StoreDataContext _context;
+        private readonly ProductRepository _context;
 
-        public ProductController(StoreDataContext context)
+        public ProductController(ProductRepository context)
         {
             _context = context;
         }
@@ -23,26 +21,15 @@ namespace ProductCatalog.Controllers
         [HttpGet]
         public IEnumerable<ListProductViewModel> Get()
         {
-            return _context.Products
-                .Include(x => x.Category)
-                .Select(x => new ListProductViewModel
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Price = x.Price,
-                    Category = x.Category.Title,
-                    CategoryId = x.Category.Id
-                })
-                .AsNoTracking()
-                .ToList();
+            return _context.Get();
         }
 
         [Route("v1/products/{id}")]
         [HttpGet]
         public Product Get(int id)
         {
-            return _context.Products.Where(x => x.Id == id).FirstOrDefault();
-        }        
+            return _context.Get(id);
+        }
 
         [Route("v1/products")]
         [HttpPost]
@@ -78,10 +65,9 @@ namespace ProductCatalog.Controllers
             product.Image = model.Image;
             product.LastUpdateDate = DateTime.Now;
             product.Price = model.Price;
-            product.Quantity = model.Quatity;
+            product.Quantity = model.Quantity;
 
-            _context.Products.Add(product);
-            _context.SaveChanges();
+            _context.Save(product);
 
             return new ResultViewModel
             {
@@ -117,17 +103,16 @@ namespace ProductCatalog.Controllers
                 };
             }
 
-            var product = _context.Products.Find(model.Id);
+            var product = _context.Get(model.Id);
             product.Title = model.Title;
             product.CategoryId = model.CategoryId;
             product.Description = model.Description;
             product.Image = model.Image;
             product.LastUpdateDate = DateTime.Now;
             product.Price = model.Price;
-            product.Quantity = model.Quatity;
+            product.Quantity = model.Quantity;
 
-            _context.Entry(product).State = EntityState.Modified;
-            _context.SaveChanges();
+            _context.Update(product);
 
             return new ResultViewModel
             {
@@ -136,7 +121,6 @@ namespace ProductCatalog.Controllers
                 Data = product
             };
         }
-
 
     }
 }
