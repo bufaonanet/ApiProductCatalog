@@ -5,8 +5,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ProductCatalog.Data;
 using ProductCatalog.Repositoreis;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.Swagger;
 
 namespace ProductCatalog
 {
@@ -15,7 +13,7 @@ namespace ProductCatalog
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc();            
 
             //adicionando o middleware para o serviço de compressão
             services.AddResponseCompression();
